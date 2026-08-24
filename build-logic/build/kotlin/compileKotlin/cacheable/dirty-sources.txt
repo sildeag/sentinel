@@ -1,0 +1,2 @@
+D:\Android\Projects\sentinel\build-logic\src\main\kotlin\com\sildeag\sentinel\architecture\SentinelScanTask.kt
+D:\Android\Projects\sentinel\build-logic\src\main\kotlin\com\sildeag\sentinel\architecture\SentinelPlugin.kt
