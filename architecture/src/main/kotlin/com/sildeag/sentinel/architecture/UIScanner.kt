@@ -1,5 +1,7 @@
 package com.sildeag.sentinel.architecture
 
+import java.io.File
+
 object UIScanner {
     fun scan(root: File) {
         root.walkTopDown()
