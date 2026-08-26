@@ -1,45 +1,74 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+###############################################
+# OS ARTIFACTS
+###############################################
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-*.xml
-*.tab
-*.tab_i
-*.tab.*
-*.tab.*.*
-*.bin
-*.txt
+Thumbs.db
+*.hprof
+
+###############################################
+# IDE ARTIFACTS (IntelliJ / Android Studio)
+###############################################
+.idea/
+*.iml
+
+# IntelliJ module/project metadata
+.idea/modules.xml
+.idea/workspace.xml
+.idea/libraries/
+.idea/caches/
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+###############################################
+# GRADLE & KOTLIN BUILD SYSTEM
+###############################################
+.gradle/
+build/
+out/
+target/
+**/build/
+**/out/
+**/target/
+
+# Kotlin Gradle plugin data
+.kotlin/
+gradle.kotlin.*
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
+
+###############################################
+# ANDROID-SPECIFIC BUILD OUTPUTS
+###############################################
+captures/
+.externalNativeBuild/
+.cxx/
+
+###############################################
+# LOCAL CONFIGURATION
+###############################################
 local.properties
-# Local-only resources
+
+###############################################
+# AUDIO / MODEL FILES (local-only resources)
+###############################################
 models/
 **/sounds/
 *.mp3
 *.wav
 archive/
 
-# Compiled class files
-*.class
-
-# Log files
+###############################################
+# LOGS & TEMP FILES
+###############################################
 *.log
+*.ctxt        # BlueJ
+.mtj.tmp/     # J2ME temp
 
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package files
+###############################################
+# PACKAGE FILES
+###############################################
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
 *.war
@@ -49,34 +78,29 @@ archive/
 *.tar.gz
 *.rar
 
-# JVM crash logs
-hs_err_pid*
-replay_pid*
+###############################################
+# TAB / BINARY / MISC ARTIFACTS
+###############################################
+*.bin
+*.txt
+*.xml
+*.tab
+*.tab_i
+*.tab.*
+*.tab.*.*
 
-# Kotlin Gradle plugin data
-.kotlin/
-
-# Build outputs
-**/build/
-**/out/
-**/target/
-
-# Build-logic specific artifacts
+###############################################
+# BUILD-LOGIC / SENTINEL INTERNAL ARTIFACTS
+###############################################
+# Old build-logic (sound2text)
 build-logic/.gradle/
 build-logic/build/
 build-logic/.kotlin/
-gradle.kotlin.*
+
+# New sentinel build-logic
+build-logic-sentinel/.gradle/
+build-logic-sentinel/build/
+build-logic-sentinel/.kotlin/
+
+# Internal tooling artifacts
 internal_*
-# IDE and tooling
-.idea/
-*.iml
-.gradle/
-local.properties
-
-# OS artifacts
-.DS_Store
-Thumbs.db
-*.hprof
-
-
-
