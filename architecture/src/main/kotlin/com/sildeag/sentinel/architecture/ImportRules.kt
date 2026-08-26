@@ -13,12 +13,10 @@ data class ImportViolation(
 
 object ImportRules {
 
-    fun checkImport(module: Module, import: String): String? {
-        val violation: ImportViolation? = importCheck(module, import)
-        return violation?.reason   // convert to String?
+    fun checkImport(module: Module, import: String): ImportViolation? {
+        return importCheck(module, import)
     }
 
-        // Your new rule engine
     private fun importCheck(module: Module, import: String): ImportViolation? {
         // whatever logic you already wrote
 
