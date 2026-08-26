@@ -1,7 +1,7 @@
 package com.sildeag.sentinel.architecture
 
 object ThemeRules {
-    fun isForbidden(module: Module, filePath: String, line: String):
+    fun isForbidden(module: Module_old, filePath: String, line: String):
             Any? {
         val isThemeFile = "theme" in filePath
         if (isThemeFile) return null

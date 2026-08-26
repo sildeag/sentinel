@@ -1,16 +1,16 @@
 package com.sildeag.sentinel.architecture
 
 object DIRules {
-    fun isForbidden(module: Module, line: String): String? {
+    fun isForbidden(module: Module_old, line: String): String? {
         return when (module) {
-            Module.CORE -> when {
+            Module_old.CORE -> when {
                 DIPatterns.implRepo.containsMatchIn(line) ->
                     "DI implementations forbidden in core"
                         DIPatterns.moduleBlock.containsMatchIn(line) ->
                             "DI modules forbidden in core"
                 else -> null
             }
-            Module.UI_COMMON, Module.PDF -> when {
+            Module_old.UI_COMMON, Module_old.PDF -> when {
                 DIPatterns.koin.containsMatchIn(line) ->
                     "DI forbidden in shared modules"
                         DIPatterns.dagger.containsMatchIn(line) ->

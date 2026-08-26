@@ -12,4 +12,71 @@
 /captures
 .externalNativeBuild
 .cxx
+*.xml
+*.tab
+*.tab_i
+*.tab.*
+*.tab.*.*
+*.bin
+*.txt
 local.properties
+# Local-only resources
+models/
+**/sounds/
+*.mp3
+*.wav
+archive/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package files
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
+
+# Kotlin Gradle plugin data
+.kotlin/
+
+# Build outputs
+**/build/
+**/out/
+**/target/
+
+# Build-logic specific artifacts
+build-logic/.gradle/
+build-logic/build/
+build-logic/.kotlin/
+gradle.kotlin.*
+internal_*
+# IDE and tooling
+.idea/
+*.iml
+.gradle/
+local.properties
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+*.hprof
+
+
+

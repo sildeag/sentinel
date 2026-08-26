@@ -1,6 +1,6 @@
 package com.sildeag.sentinel.architecture
 
-enum class Module {
+enum class Module_old {
     CORE,
     PDF,
     UI_COMMON,

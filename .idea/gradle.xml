@@ -7,9 +7,9 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="$PROJECT_DIR$/build-logic" name="build-logic">
+              <build path="$PROJECT_DIR$/build-logic-sentinel" name="build-logic-sentinel">
                 <projects>
-                  <project path="$PROJECT_DIR$/build-logic" />
+                  <project path="$PROJECT_DIR$/build-logic-sentinel" />
                 </projects>
               </build>
             </builds>
@@ -21,7 +21,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/architecture" />
-            <option value="$PROJECT_DIR$/build-logic" />
+            <option value="$PROJECT_DIR$/build-logic-sentinel" />
           </set>
         </option>
       </GradleProjectSettings>

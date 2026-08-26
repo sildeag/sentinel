@@ -9,7 +9,7 @@ object ImportScanner {
             .forEach { file ->
                 val module = ModuleDetector.detect(file.path)
                 file.readLines().forEach { line ->
-                    ImportRules.isForbidden(module, line)?.let { reason ->
+                    ImportRules.checkImport(module, line)?.let { reason ->
                         WarningPrinter.print(
                             Warning(module, file.path, line.trim(),
                                 reason)

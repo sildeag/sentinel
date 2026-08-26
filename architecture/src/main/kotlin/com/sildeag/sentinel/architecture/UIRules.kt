@@ -1,10 +1,10 @@
 package com.sildeag.sentinel.architecture
 
 object UIRules {
-    fun isForbidden(module: Module, line: String): String? {
+    fun isForbidden(module: Module_old, line: String): String? {
         return when (module) {
-            Module.CORE, Module.PDF, Module.APP_ANDROID,
-            Module.APP_DESKTOP -> {
+            Module_old.CORE, Module_old.PDF, Module_old.APP_ANDROID,
+            Module_old.APP_DESKTOP -> {
                 when {
                     UIPatterns.composable.containsMatchIn(line) ->
                         "Composable forbidden in $module"
