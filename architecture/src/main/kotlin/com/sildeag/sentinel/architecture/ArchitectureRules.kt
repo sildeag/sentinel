@@ -15,6 +15,15 @@ object ArchitectureRules {
         dependencies: List<String>
     ): FileAnalysisResult {
         val module = classifyEnumModule(modulePath)
+        if (module == EnumModule.UNKNOWN) {
+            return FileAnalysisResult(
+                module = EnumModule.UNKNOWN,
+                importViolations = emptyList(),
+                dependencyViolations = emptyList()
+            )
+        }
+
+
         val importViolations = buildList {
             addAll(imports.mapNotNull
             { ImportRules.checkImport(module, it) })
