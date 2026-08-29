@@ -87,6 +87,8 @@ If sound2text includes Sentinel using a composite build:
 
 kotlin
 ```// sound2text/settings.gradle.kts
+includeBuild("../sentinel/build-logic-sentinel")
+// composite builds to not do nested builds
 includeBuild("../sentinel")
 ```
 
