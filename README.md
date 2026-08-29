@@ -79,7 +79,7 @@ If Sentinel is included directly inside the sound2text repository:
 Then you can run it from anywhere inside the repo:
 
 ```powershell
-./gradlew :architecture:run --args="D:/Android/Projects/sound2text"
+./gradlew architecture:run --args="D:/Android/Projects/sound2text" > "sentinel-errors-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
 ```
 
 ### 3. Running Sentinel via composite build (recommended)
@@ -93,7 +93,7 @@ includeBuild("../sentinel")
 Then Sentinel becomes available as an external build, and you can run it
 directly from inside sound2text:
 ```
-./gradlew :architecture:run --args="D:/Android/Projects/sound2text"
+./gradlew architecture:run --args="D:/Android/Projects/sound2text" > "sentinel-errors-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
 ```
 
 ## Architecture Overview
