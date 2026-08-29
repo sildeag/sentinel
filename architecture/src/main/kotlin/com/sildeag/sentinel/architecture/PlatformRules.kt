@@ -37,7 +37,7 @@ object PlatformRules {
             ModulePolicy.TEST,
             ModulePolicy.UNKNOWN -> null
 
-            else -> {null}
+            else -> null
         }
     }
 }
