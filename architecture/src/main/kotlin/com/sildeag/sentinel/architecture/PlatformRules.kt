@@ -1,28 +1,43 @@
 package com.sildeag.sentinel.architecture
-
 object PlatformRules {
-    fun isForbidden(module: Module_old, line: String): String? {
-        return when (module) {
-            Module_old.UI_COMMON, Module_old.CORE, Module_old.PDF -> when {
-                PlatformPatterns.android.containsMatchIn(line) ->
-                    "Android code forbidden in $module"
-                PlatformPatterns.desktopAwt.containsMatchIn(line) ->
-                    "Desktop code forbidden in $module"
-                PlatformPatterns.desktopSwing.containsMatchIn(line)
-                    -> "Desktop code forbidden in $module"
-                else -> null
+    fun checkRules(module: EnumModule, import: String):
+            ImportViolation? {
+        val policy = ModulePolicyTable.policy[module]
+        fun forbidden(msg: String, suggestion: String? = null) =
+            ImportViolation(module, import, msg, suggestion)
+        return when (policy) {
+            // CORE-LIKE modules forbid all platform imports
+            ModulePolicy.CORE_LIKE -> {
+                when {
+                    PlatformPatterns.android.containsMatchIn(import)
+                        ->
+                        forbidden("Android API forbidden in $module.",
+                    "Move this code to :ui-android, :pdfandroid, or :stt-android.")
+
+                        PlatformPatterns.desktopAwt.containsMatchIn(import) ||
+
+                                PlatformPatterns.desktopSwing.containsMatchIn(import) ->
+                    forbidden("Desktop API forbidden in $module.",
+                    "Move this code to :ui-desktop or :pdfdesktop.")
+                    else -> null
+                }
             }
-            Module_old.ANDROID_UI -> when {
-                PlatformPatterns.desktopAwt.containsMatchIn(line) ->
-                    "Desktop code forbidden in android-ui"
-                else -> null
+            // PLATFORM_IMPL modules forbid UI imports (handled in ImportRules)
+                ModulePolicy.PLATFORM_IMPL -> null
+            // FEATURE modules allow platform imports indirectly
+            ModulePolicy.FEATURE -> null
+            // UI modules forbid platform engines (handled in ImportRules)
+                ModulePolicy.UI -> null
+            // Legacy UI forbids Android
+            ModulePolicy.LEGACY_UI -> {
+                if (PlatformPatterns.android.containsMatchIn(import))
+                    forbidden("Android API forbidden in JavaFX UI module.")
+                        else null
             }
-            Module_old.DESKTOP_UI -> when {
-                PlatformPatterns.android.containsMatchIn(line) ->
-                    "Android code forbidden in desktop-ui"
-                else -> null
-            }
-            else -> null
+            ModulePolicy.TEST,
+            ModulePolicy.UNKNOWN -> null
+
+            else -> {null}
         }
     }
 }

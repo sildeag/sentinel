@@ -11,12 +11,20 @@ class ArchitectureSentinel(
             if (!file.isFile || !file.name.endsWith(".kt"))
                 return@forEach
             val modulePath = modulePathFor(file)
-            val module = classifyModule(modulePath)
+            val module = classifyEnumModule(modulePath)
             val imports = extractImports(file)
+            val uiPatterns = extractUIPatterns(file)
+            val themePatterns = extractThemePatterns(file)
+            val platformPatterns = extractPlatformPatterns(file)
+            val diPatterns = extractDIPatterns(file)
             val dependencies = extractDependencies(modulePath)
             val result = ArchitectureRules.analyzeFile(
                 modulePath = modulePath,
                 imports = imports,
+                uiPatterns = uiPatterns,
+                themePatterns = themePatterns,
+                platformPatterns = platformPatterns,
+                diPatterns = diPatterns,
                 dependencies = dependencies
             )
             if (result.importViolations.isNotEmpty() ||
@@ -37,10 +45,28 @@ class ArchitectureSentinel(
         file.readLines()
             .filter { it.trim().startsWith("import ") }
             .map { it.removePrefix("import ").trim() }
+    private fun extractUIPatterns(file: File): List<String> =
+        file.readLines().filter { UIPatterns.isUIFunction(it) ||
+                UIPatterns.isComposable(it) ||
+                UIPatterns.isPreview(it) }
+    private fun extractThemePatterns(file: File): List<String> =
+        file.readLines().filter { ThemePatterns.typography.containsMatchIn(it) ||
+            ThemePatterns.textStyle.containsMatchIn(it) ||
+            ThemePatterns.fontWeight.containsMatchIn(it) ||
+            ThemePatterns.sp.containsMatchIn(it) }
+    private fun extractPlatformPatterns(file: File): List<String> =
+        file.readLines().filter { PlatformPatterns.android.containsMatchIn(it) ||
+
+            PlatformPatterns.desktopAwt.containsMatchIn(it) ||
+            PlatformPatterns.desktopSwing.containsMatchIn(it) }
+    private fun extractDIPatterns(file: File): List<String> =
+        file.readLines().filter { DIPatterns.isDIImport(it) ||
+                DIPatterns.isDIConstruct(it) ||
+                DIPatterns.isRepositoryImpl(it) ||
+                DIPatterns.isDIModuleBlock(it) }
     private fun extractDependencies(modulePath: String): List<String>
     {
-        // You can enhance this later by reading build.gradle.kts
-        // For now, Sentinel only checks project dependencies declared in settings.gradle
+        // Later: parse settings.gradle or build.gradle.kts
         return emptyList()
     }
     private fun report(results: List<FileAnalysisResult>) {
@@ -56,35 +82,10 @@ class ArchitectureSentinel(
                 println(" ${v.message}")
                 v.suggestion?.let { println(" Suggestion: $it") }
             }
-            result.dependencyViolations.forEach { v -> println(" Dependency violation: ${v.from} -> ${v.to}")
+            result.dependencyViolations.forEach { v ->
+                println(" Dependency violation: ${v.from} -> ${v.to}")
                         println(" ${v.message}")
             }
         }
     }
 }
-
-/*
-import java.io.File
-object ArchitectureSentinel {
-    enum class ScanMode { IMPORTS, UI, PLATFORM, THEME, DI, DEPENDENCY, ALL }
-    fun run(root: File, mode: ScanMode = ScanMode.ALL) {
-        println("Running Sentinel mode: $mode")
-        when (mode) {
-            ScanMode.IMPORTS -> ImportScanner.scan(root)
-            ScanMode.UI -> UIScanner.scan(root)
-            ScanMode.PLATFORM -> PlatformScanner.scan(root)
-            ScanMode.THEME -> ThemeScanner.scan(root)
-            ScanMode.DI -> DIScanner.scan(root)
-            ScanMode.DEPENDENCY -> DependencyScanner.scan(root)
-            ScanMode.ALL -> {
-                ImportScanner.scan(root)
-                UIScanner.scan(root)
-                PlatformScanner.scan(root)
-                ThemeScanner.scan(root)
-                DIScanner.scan(root)
-                DependencyScanner.scan(root)
-            }
-        }
-    }
-}
-*/

@@ -1,21 +1,34 @@
 package com.sildeag.sentinel.architecture
-
 object UIRules {
-    fun isForbidden(module: Module_old, line: String): String? {
-        return when (module) {
-            Module_old.CORE, Module_old.PDF, Module_old.APP_ANDROID,
-            Module_old.APP_DESKTOP -> {
-                when {
-                    UIPatterns.composable.containsMatchIn(line) ->
-                        "Composable forbidden in $module"
-                    UIPatterns.preview.containsMatchIn(line) ->
-                        "Preview forbidden in $module"
-                    UIPatterns.uiFunctions.any { line.contains(it) }
-                        -> "UI function forbidden in $module"
-                    else -> null
-                }
+    fun checkRules(module: EnumModule, import: String):
+            ImportViolation? {
+        val policy = ModulePolicyTable.policy[module]
+        // UI code is forbidden in non‑UI modules
+        if (policy != ModulePolicy.UI) {
+            when {
+                UIPatterns.isComposable(import) ->
+                    return ImportViolation(
+                        module = module,
+                        import = import,
+                        message = "Composable forbidden in $module",
+                        suggestion = "Move composables to a UI module."
+                    )
+                UIPatterns.isPreview(import) ->
+                    return ImportViolation(
+                        module = module,
+                        import = import,
+                        message = "Preview forbidden in $module",
+                        suggestion = "Move previews to a UI module."
+                    )
+                UIPatterns.isUIFunction(import) ->
+                    return ImportViolation(
+                        module = module,
+                        import = import,
+                        message = "UI function forbidden in $module",
+                        suggestion = "Move UI functions to a UI module."
+                    )
             }
-            else -> null
         }
+        return null
     }
 }

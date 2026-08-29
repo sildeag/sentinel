@@ -1,0 +1,30 @@
+package com.sildeag.sentinel.architecture
+
+enum class EnumModule {
+    CORE,
+    PLATFORM,
+    SETTINGS,
+    STORAGE,
+    DI,
+    APP_COMMON,
+    FEATURE_CAPABILITIES,
+    FEATURE_FORM,
+    FEATURE_GENEALOGY,
+    FEATURE_HISTORY,
+    FEATURE_PDF,
+    FEATURE_PDFWIZARD,
+    FEATURE_RECORDING,
+    FEATURE_SETTINGS,
+    FEATURE_SQLITE,
+    FEATURE_STT,
+    PDF_ANDROID,
+    PDF_DESKTOP,
+    STT_ANDROID,
+    STT_DESKTOP,
+    UI_COMMON,
+    UI_ANDROID,
+    UI_DESKTOP,
+    UI_LEGACY,
+    TEST_HARNESS,
+    UNKNOWN
+}

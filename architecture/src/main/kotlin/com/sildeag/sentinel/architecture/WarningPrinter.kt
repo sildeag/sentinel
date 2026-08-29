@@ -1,7 +1,15 @@
 package com.sildeag.sentinel.architecture
 
 object WarningPrinter {
-    fun print(w: Warning) {
-        println(" ⚠️ ${w.reason}\n Module: ${w.module}\n File: ${w.file}\n Line: ${w.line}\n")
+    fun print(result: FileAnalysisResult) {
+        println("Module: ${result.module}")
+        result.importViolations.forEach { v ->
+            println(" Import violation: ${v.import}")
+            println(" ${v.reason}")
+        }
+        result.dependencyViolations.forEach { v ->
+            println(" Dependency violation: ${v.from} -> ${v.to}")
+            println(" ${v.message}")
+        }
     }
 }

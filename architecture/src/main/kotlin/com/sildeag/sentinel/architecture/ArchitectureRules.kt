@@ -1,7 +1,6 @@
 package com.sildeag.sentinel.architecture
-
 data class FileAnalysisResult(
-    val module: Module,
+    val module: EnumModule,
     val importViolations: List<ImportViolation>,
     val dependencyViolations: List<DependencyViolation>
 )
@@ -9,14 +8,28 @@ object ArchitectureRules {
     fun analyzeFile(
         modulePath: String,
         imports: List<String>,
-        dependencies: List<String> // Gradle project paths this module depends on
+        uiPatterns: List<String>,
+        themePatterns: List<String>,
+        platformPatterns: List<String>,
+        diPatterns: List<String>,
+        dependencies: List<String>
     ): FileAnalysisResult {
-        val module = classifyModule(modulePath)
-        val importViolations = imports.mapNotNull()
-        { ImportRules.checkImport(module, it) }
+        val module = classifyEnumModule(modulePath)
+        val importViolations = buildList {
+            addAll(imports.mapNotNull
+            { ImportRules.checkImport(module, it) })
+            addAll(uiPatterns.mapNotNull { UIRules.checkRules(module,
+                it) })
+            addAll(themePatterns.mapNotNull
+            { ThemeRules.checkRules(module, it) })
+            addAll(platformPatterns.mapNotNull
+            { PlatformRules.checkRules(module, it) })
+            addAll(diPatterns.mapNotNull
+            { DIRules.checkImport(module, it) })
+        }
         val dependencyViolations = dependencies.mapNotNull { depPath
             ->
-            val toModule = classifyModule(depPath)
+            val toModule = classifyEnumModule(depPath)
             DependencyRules.checkDependency(module, toModule)
         }
         return FileAnalysisResult(
@@ -26,3 +39,4 @@ object ArchitectureRules {
         )
     }
 }
+
