@@ -10,7 +10,10 @@ object UIPatterns {
         import.contains("@Preview")
 
     fun isUIFunction(import: String): Boolean =
-        uiFunctions.any { import.contains(it) }
+        uiFunctions.any { 
+            // Use word boundaries to prevent matching substrings (e.g., "Sound2Text")
+            Regex("\\b${it}\\b").containsMatchIn(import) 
+        }
 
     private val uiFunctions = listOf(
         "Text",

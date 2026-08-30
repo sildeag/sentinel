@@ -1,12 +1,15 @@
 package com.sildeag.sentinel.architecture
+
+import kotlin.uuid.Uuid
+
 object ThemeRules {
-    fun checkRules(module: EnumModule, import: String):
+    fun checkRules(module: EnumModule, ktmodule: String, id: Uuid, import: String):
             ImportViolation? {
         val policy = ModulePolicyTable.policy[module]
         // Theme code is only allowed in UI modules
         if (policy != ModulePolicy.UI) {
             fun forbidden(msg: String, suggestion: String? = null) =
-                ImportViolation(module, import, msg, suggestion)
+                ImportViolation(module, ktmodule, import, msg, suggestion, id)
             return when {
                 ThemePatterns.typography.containsMatchIn(import) ->
                     forbidden(
@@ -33,4 +36,5 @@ object ThemeRules {
         }
         return null
     }
+
 }

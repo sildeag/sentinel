@@ -1,11 +1,14 @@
 package com.sildeag.sentinel.architecture
+
+import kotlin.uuid.Uuid
+
 object ImportRules {
-    fun checkImport(module: EnumModule, import: String):
+    fun checkImport(module: EnumModule, ktmodule: String, id: Uuid, import: String):
             ImportViolation? {
         val policy = ModulePolicyTable.policy[module]
         if (module == EnumModule.TEST_HARNESS) return null
         fun forbidden(msg: String, suggestion: String? = null) =
-            ImportViolation(module, import, msg, suggestion)
+            ImportViolation(module, ktmodule, import, msg, suggestion, id)
         return when (policy) {
             ModulePolicy.CORE_LIKE -> {
                 when {

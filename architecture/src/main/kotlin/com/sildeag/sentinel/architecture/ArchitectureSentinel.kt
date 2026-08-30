@@ -21,8 +21,11 @@ class ArchitectureSentinel(
             with(file) {
                 if (!isKotlinSource()) return@forEach
             }
-            
+
+            val ktmodule = file.relativeTo(projectRoot).path
+
             val modulePath = modulePathFor(file)
+            //println("Filename $ktmodule, module $modulePath,file.name ${file.name}\n")
             val imports = extractImports(file)
             val uiPatterns = extractUIPatterns(file)
             val themePatterns = extractThemePatterns(file)
@@ -32,6 +35,7 @@ class ArchitectureSentinel(
             
             val result = ArchitectureRules.analyzeFile(
                 modulePath = modulePath,
+                ktmodule = ktmodule,
                 imports = imports,
                 uiPatterns = uiPatterns,
                 themePatterns = themePatterns,
@@ -94,20 +98,28 @@ class ArchitectureSentinel(
             println("Sentinel: no violations found.")
             return
         }
+
         println("Sentinel: violations found (${results.size} modules):")
+
         results.forEach { result ->
+            if (result.importViolations.isEmpty() &&
+                result.dependencyViolations.isEmpty()
+            ) return@forEach
+
             println("\nModule: ${result.module}")
+
             result.importViolations.forEach { v ->
-                println(" Import violation (ID: ${v.id}): ${v.import}")
-                println(" ${v.message}")
-                v.suggestion?.let { println(" Suggestion: $it") }
+                println(v)
             }
+
             result.dependencyViolations.forEach { v ->
-                println(" Dependency violation: ${v.from} -> ${v.to}")
+                println("Dependency violation: ${v.from} -> ${v.to}")
                 println(" ${v.message}")
             }
         }
     }
+
+
 }
 
 /*

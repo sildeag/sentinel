@@ -1,12 +1,18 @@
 package com.sildeag.sentinel.architecture
+
+import kotlin.uuid.Uuid
+
 data class FileAnalysisResult(
     val module: EnumModule,
     val importViolations: List<ImportViolation>,
     val dependencyViolations: List<DependencyViolation>
 )
+
 object ArchitectureRules {
+
     fun analyzeFile(
         modulePath: String,
+        ktmodule: String,
         imports: List<String>,
         uiPatterns: List<String>,
         themePatterns: List<String>,
@@ -14,6 +20,7 @@ object ArchitectureRules {
         diPatterns: List<String>,
         dependencies: List<String>
     ): FileAnalysisResult {
+
         val module = classifyEnumModule(modulePath)
         if (module == EnumModule.UNKNOWN) {
             return FileAnalysisResult(
@@ -23,24 +30,37 @@ object ArchitectureRules {
             )
         }
 
+//        val ktmodule = modulePath.substringAfterLast('/')
+        val id = Uuid.random()
 
         val importViolations = buildList {
-            addAll(imports.mapNotNull
-            { ImportRules.checkImport(module, it) })
-            addAll(uiPatterns.mapNotNull { UIRules.checkRules(module,
-                it) })
-            addAll(themePatterns.mapNotNull
-            { ThemeRules.checkRules(module, it) })
-            addAll(platformPatterns.mapNotNull
-            { PlatformRules.checkRules(module, it) })
-            addAll(diPatterns.mapNotNull
-            { DIRules.checkImport(module, it) })
+
+            addAll(imports.mapNotNull {
+                ImportRules.checkImport(module, ktmodule, id, it)
+            })
+
+            addAll(uiPatterns.mapNotNull {
+                UIRules.checkRules(module, ktmodule, id, it)
+            })
+
+            addAll(themePatterns.mapNotNull {
+                ThemeRules.checkRules(module, ktmodule, id, it)
+            })
+
+            addAll(platformPatterns.mapNotNull {
+                PlatformRules.checkRules(module, ktmodule, id, it)
+            })
+
+            addAll(diPatterns.mapNotNull {
+                DIRules.checkRules(module, ktmodule, id, it)
+            })
         }
-        val dependencyViolations = dependencies.mapNotNull { depPath
-            ->
+
+        val dependencyViolations = dependencies.mapNotNull { depPath ->
             val toModule = classifyEnumModule(depPath)
             DependencyRules.checkDependency(module, toModule)
         }
+
         return FileAnalysisResult(
             module = module,
             importViolations = importViolations,
@@ -48,4 +68,3 @@ object ArchitectureRules {
         )
     }
 }
-

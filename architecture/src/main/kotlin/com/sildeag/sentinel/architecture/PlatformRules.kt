@@ -1,10 +1,13 @@
 package com.sildeag.sentinel.architecture
+
+import kotlin.uuid.Uuid
+
 object PlatformRules {
-    fun checkRules(module: EnumModule, import: String):
+    fun checkRules(module: EnumModule, ktmodule: String, id: Uuid, import: String):
             ImportViolation? {
         val policy = ModulePolicyTable.policy[module]
         fun forbidden(msg: String, suggestion: String? = null) =
-            ImportViolation(module, import, msg, suggestion)
+            ImportViolation(module, ktmodule, import, msg, suggestion, id)
         return when (policy) {
             // CORE-LIKE modules forbid all platform imports
             ModulePolicy.CORE_LIKE -> {
