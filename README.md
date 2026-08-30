@@ -147,14 +147,12 @@ flowchart TD
     D --> PT3
     D --> PT4
     D --> PT5
-
     F1 --> P
     F2 --> P
     F3 --> P
     F4 --> P
     F5 --> P
     F6 --> P
-
     E --> R["FileAnalysisResult"]
     R --> O["Sentinel Report"]
 ```
