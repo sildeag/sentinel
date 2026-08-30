@@ -65,7 +65,7 @@ If Sentinel is a standalone project:
 cd sentinel
 ./gradlew :architecture:run --args="D:/Android/Projects/sound2text" > "sentinel-errors-$(Get-Date -Format 'yyyyMMdd-HHmmss').txt"
 ```
-### 2. Running Sentinel as a module inside the target project (unavailable due to AGP bug)
+### 2. Running Sentinel as a module inside the target project (unavailable, AGP bug)
 
 If Sentinel is included directly inside the sound2text repository:
 
@@ -82,7 +82,7 @@ Then you can run it from anywhere inside the repo:
 ./gradlew :sentinel:architecture:run --args="D:/Android/Projects/sound2text"
 ```
 
-### 3. Running Sentinel via composite build (recommended but unavailable due to AGP bug)
+### 3. Running Sentinel via composite build (recommended but unavailable, AGP bug)
 If sound2text includes Sentinel using a composite build:
 
 kotlin
