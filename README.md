@@ -28,7 +28,7 @@ Sentinel includes six independent rule engines:
 - **PlatformRules** — Android/Desktop API boundaries  
 - **ThemeRules** — typography, TextStyle, font weights, `sp` usage  
 - **UIRules** — Compose UI, previews, UI functions  
-- **DIRules** — DI frameworks, modules, constructs, repository impls  
+- **DIRules** — DI frameworks, modules, constructs, repository impl  
 - **DependencyRules** — module‑to‑module dependency validation  
 
 ### ✔ Module Classification
@@ -157,3 +157,4 @@ flowchart TD
 
     E --> R["FileAnalysisResult"]
     R --> O["Sentinel Report"]
+```
