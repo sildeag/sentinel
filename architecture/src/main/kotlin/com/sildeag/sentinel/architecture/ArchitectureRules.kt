@@ -30,7 +30,6 @@ object ArchitectureRules {
             )
         }
 
-//        val ktmodule = modulePath.substringAfterLast('/')
         val id = Uuid.random()
 
         val importViolations = buildList {
@@ -54,7 +53,10 @@ object ArchitectureRules {
             addAll(diPatterns.mapNotNull {
                 DIRules.checkRules(module, ktmodule, id, it)
             })
+        }.filter { violation ->
+            violation.message.isNotBlank() && violation.import.isNotBlank()
         }
+
 
         val dependencyViolations = dependencies.mapNotNull { depPath ->
             val toModule = classifyEnumModule(depPath)
@@ -68,3 +70,15 @@ object ArchitectureRules {
         )
     }
 }
+/*
+    val importViolations = buildList {
+        addAll(imports.mapNotNull { ImportRules.checkImport(module, ktmodule, id, it) })
+        addAll(uiPatterns.mapNotNull { UIRules.checkRules(module, ktmodule, id, it) })
+        addAll(themePatterns.mapNotNull { ThemeRules.checkRules(module, ktmodule, id, it) })
+        addAll(platformPatterns.mapNotNull { PlatformRules.checkRules(module, ktmodule, id, it) })
+        addAll(diPatterns.mapNotNull { DIRules.checkRules(module, ktmodule, id, it) })
+        }.filter { violation ->
+    violation.message.isNotBlank() || violation.import.isNotBlank()
+    }
+
+         */

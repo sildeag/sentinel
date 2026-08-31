@@ -99,25 +99,34 @@ class ArchitectureSentinel(
             return
         }
 
-        println("Sentinel: violations found (${results.size} modules):")
+        println("Sentinel: violations found (${results.size} files):")
 
-        results.forEach { result ->
-            if (result.importViolations.isEmpty() &&
-                result.dependencyViolations.isEmpty()
-            ) return@forEach
+        // Flatten all violations and group by file path
+        val grouped = results
+            .flatMap { it.importViolations }
+            .groupBy { it.ktmodule }
 
-            println("\nModule: ${result.module}")
+        grouped.forEach { (file, violations) ->
+            if (violations.isEmpty()) return@forEach
 
-            result.importViolations.forEach { v ->
-                println(v)
-            }
+            val module = violations.first().module
 
-            result.dependencyViolations.forEach { v ->
-                println("Dependency violation: ${v.from} -> ${v.to}")
-                println(" ${v.message}")
-            }
+            println("\nModule: $module")
+            println("File: $file")
+            println("Violations:")
+
+            violations
+                .map { v -> v.copy(import = v.import.removePrefix("import ").trim()) }
+                .distinctBy { it.import }  // remove duplicates
+                .forEach { v ->
+                    println(" - Import: ${v.import}")
+                    println("   Message: ${v.message}")
+                    v.suggestion?.let { println("   Suggestion: $it") }
+                }
         }
     }
+
+
 
 
 }

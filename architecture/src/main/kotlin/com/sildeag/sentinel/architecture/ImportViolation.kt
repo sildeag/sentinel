@@ -19,7 +19,6 @@ data class ImportViolation(
             appendLine(" Message: $message")
             suggestion?.let { appendLine(" Suggestion: $it") }
             appendLine(" ID: $id")
-            println()
         }
     }
 }
