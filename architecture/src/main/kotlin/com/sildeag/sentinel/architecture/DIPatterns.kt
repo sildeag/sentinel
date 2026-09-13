@@ -2,6 +2,7 @@ package com.sildeag.sentinel.architecture
 
 object DIPatterns {
 
+
     // Legacy regex support (not used by the rule engine)
     private val singleRegex = Regex("""single<\w+>""")
     private val factoryRegex = Regex("""factory\s*\{""")
